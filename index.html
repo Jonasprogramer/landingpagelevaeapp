@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Levaê - O SuperApp da Sua Cidade | Delivery, Lojas e Entregas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Levaê - O SuperApp da Sua Cidade</title>
 
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- FontAwesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -27,8 +27,7 @@
       --card-border: #23232c;
       --text-white: #ffffff;
       --text-gray: #9aa0a6;
-      --radius: 20px;
-      --transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      --transition: all 0.3s ease;
     }
 
     * {
@@ -37,80 +36,103 @@
       box-sizing: border-box;
       font-family: 'Plus Jakarta Sans', sans-serif;
       scroll-behavior: smooth;
+      writing-mode: horizontal-tb !important; /* Trava anti-vertical */
     }
 
-    body {
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
       background-color: var(--bg-dark);
       color: var(--text-white);
-      overflow-x: hidden;
       line-height: 1.5;
     }
 
     .container {
-      max-width: 1220px;
+      width: 100%;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 16px;
     }
 
     .highlight {
       color: var(--primary);
     }
 
-    /* Navbar */
+    /* ========================================================
+       CABEÇALHO / HEADER (BLINDADO NA HORIZONTAL)
+       ======================================================== */
     header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(11, 11, 14, 0.85);
-      backdrop-filter: blur(18px);
+      height: 75px;
+      background: rgba(11, 11, 14, 0.96);
+      backdrop-filter: blur(16px);
       z-index: 1000;
       border-bottom: 1px solid var(--card-border);
     }
 
     .nav-wrap {
-      height: 86px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      height: 100%;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
     }
 
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
+    /* Logo + Texto lado a lado estritamente horizontais */
+    .brand-box {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 10px !important;
+      text-decoration: none !important;
+      flex-shrink: 0 !important;
+      white-space: nowrap !important;
+      transform: none !important;
     }
 
-    .brand-logo img {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+    .brand-logo-img {
+      width: 44px !important;
+      height: 44px !important;
+      border-radius: 12px !important;
+      object-fit: cover !important;
+      flex-shrink: 0 !important;
+      display: block !important;
       border: 1px solid rgba(255, 200, 0, 0.3);
     }
 
-    .brand-name {
-      font-size: 24px;
-      font-weight: 800;
-      color: #fff;
+    .brand-title {
+      display: inline-block !important;
+      font-size: 26px !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      letter-spacing: -0.5px !important;
+      line-height: 1 !important;
+      transform: none !important;
+      writing-mode: horizontal-tb !important;
+      white-space: nowrap !important;
     }
 
-    .brand-name span {
+    .brand-title span {
       color: var(--primary);
     }
 
     .nav-menu {
       display: flex;
+      flex-direction: row;
       list-style: none;
-      gap: 32px;
+      gap: 24px;
     }
 
     .nav-menu a {
       color: var(--text-gray);
       text-decoration: none;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       transition: var(--transition);
+      white-space: nowrap;
     }
 
     .nav-menu a:hover {
@@ -121,105 +143,146 @@
       background-color: var(--primary);
       color: #000;
       font-weight: 700;
-      padding: 12px 24px;
+      padding: 10px 20px;
       border-radius: 50px;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       transition: var(--transition);
       border: none;
       cursor: pointer;
+      white-space: nowrap;
+      font-size: 14px;
     }
 
     .btn-cta:hover {
       background-color: var(--primary-hover);
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(255, 200, 0, 0.3);
     }
 
-    /* Hero Section */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* Menu Gaveta Mobile */
+    .mobile-drawer {
+      position: fixed;
+      top: 75px;
+      left: 0;
+      width: 100%;
+      background: #0f0f13;
+      border-bottom: 2px solid var(--card-border);
+      padding: 18px;
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 999;
+    }
+
+    .mobile-drawer.open {
+      display: flex;
+    }
+
+    .mobile-drawer a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 8px 0;
+      border-bottom: 1px solid #1c1c24;
+    }
+
+    /* ========================================================
+       HERO SECTION
+       ======================================================== */
     .hero-section {
-      padding: 160px 0 90px;
+      padding: 105px 0 50px;
       position: relative;
-    }
-
-    .hero-section::before {
-      content: '';
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 650px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(255, 200, 0, 0.12) 0%, rgba(229, 37, 33, 0.05) 50%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 50px;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 30px;
       align-items: center;
-      position: relative;
-      z-index: 1;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 18px;
+      padding: 6px 14px;
       background: rgba(255, 200, 0, 0.08);
       border: 1px solid rgba(255, 200, 0, 0.25);
       border-radius: 50px;
       color: var(--primary);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      margin-bottom: 22px;
+      margin-bottom: 16px;
     }
 
     .hero-title {
-      font-size: 54px;
+      font-size: clamp(28px, 4.5vw, 50px);
       font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
     }
 
     .hero-subtitle {
-      font-size: 18px;
+      font-size: clamp(14px, 2vw, 16px);
       color: var(--text-gray);
-      margin-bottom: 35px;
+      margin-bottom: 24px;
       line-height: 1.6;
     }
 
-    /* Tabs Seletoras do App no Hero */
-    .hero-switcher {
+    /* Switcher com Scroll Touch no Mobile */
+    .switcher-container {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+    }
+
+    .switcher-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .switcher-box {
       display: flex;
-      gap: 12px;
-      background: rgba(20, 20, 25, 0.8);
-      padding: 6px;
-      border-radius: 16px;
+      flex-direction: row;
+      gap: 6px;
+      background: rgba(20, 20, 25, 0.9);
+      padding: 5px;
+      border-radius: 14px;
       border: 1px solid var(--card-border);
-      margin-bottom: 35px;
-      width: fit-content;
+      width: max-content;
     }
 
     .switch-btn {
       background: transparent;
       border: none;
       color: var(--text-gray);
-      padding: 10px 20px;
-      border-radius: 12px;
+      padding: 8px 16px;
+      border-radius: 10px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: var(--transition);
+      white-space: nowrap;
     }
 
     .switch-btn.active {
@@ -227,20 +290,29 @@
       color: #000;
     }
 
-    /* Mockup Mobile Interativo */
-    .mockup-container {
+    .hero-actions {
       display: flex;
-      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Mockup Mobile Interativo */
+    .mockup-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       position: relative;
+      margin: 15px 0;
     }
 
     .smartphone {
-      width: 310px;
-      height: 610px;
+      width: 290px;
+      height: 540px;
+      max-width: 90vw;
       background: #111115;
-      border: 10px solid #282830;
-      border-radius: 46px;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 45px rgba(255, 200, 0, 0.15);
+      border: 8px solid #282830;
+      border-radius: 38px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 200, 0, 0.12);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -248,149 +320,126 @@
     }
 
     .phone-notch {
-      width: 130px;
-      height: 22px;
+      width: 110px;
+      height: 18px;
       background: #282830;
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
       margin: 0 auto;
       z-index: 10;
     }
 
-    .screen-content {
+    .screen-body {
       flex: 1;
-      padding: 14px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      overflow-y: hidden;
+      gap: 10px;
       background: #0d0d10;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.25s ease;
+      overflow: hidden;
     }
 
-    /* Floating Badges no Mockup */
-    .float-card {
+    /* Badges Flutuantes Desktop */
+    .float-badge {
       position: absolute;
       background: rgba(22, 22, 28, 0.95);
-      backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
-      padding: 14px 18px;
-      border-radius: 18px;
+      padding: 10px 14px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       z-index: 10;
-      animation: float 4s ease-in-out infinite;
+      white-space: nowrap;
     }
 
-    .float-1 { top: 12%; left: -25px; }
-    .float-2 { bottom: 12%; right: -25px; animation-delay: 2s; }
+    .badge-top { top: 6%; left: -10px; }
+    .badge-bottom { bottom: 6%; right: -10px; }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    /* Ecossistema 3 Pontas (Cards) */
+    /* ========================================================
+       SEÇÕES & CARDS
+       ======================================================== */
     .section {
-      padding: 100px 0;
+      padding: 60px 0;
     }
 
     .section-title {
       text-align: center;
-      margin-bottom: 60px;
+      margin-bottom: 40px;
     }
 
     .section-title h2 {
-      font-size: 38px;
+      font-size: clamp(24px, 3.5vw, 34px);
       font-weight: 800;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .section-title p {
       color: var(--text-gray);
-      font-size: 16px;
-      max-width: 600px;
+      font-size: 14px;
+      max-width: 580px;
       margin: 0 auto;
     }
 
     .ecosystem-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      gap: 20px;
     }
 
     .eco-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 36px 28px;
+      border-radius: 20px;
+      padding: 24px 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      position: relative;
       transition: var(--transition);
-      overflow: hidden;
     }
 
     .eco-card:hover {
-      transform: translateY(-8px);
       border-color: var(--primary);
-    }
-
-    .eco-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--primary);
-      opacity: 0;
-      transition: var(--transition);
-    }
-
-    .eco-card:hover::before {
-      opacity: 1;
+      transform: translateY(-4px);
     }
 
     .eco-icon {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       background: rgba(255, 200, 0, 0.1);
-      border-radius: 16px;
+      border-radius: 12px;
       display: grid;
       place-items: center;
-      font-size: 26px;
+      font-size: 22px;
       color: var(--primary);
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
 
     .eco-card h3 {
-      font-size: 22px;
+      font-size: 19px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .eco-card p {
       color: var(--text-gray);
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 16px;
     }
 
     .eco-card ul {
       list-style: none;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .eco-card ul li {
       font-size: 13px;
-      color: #e0e0e0;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -400,134 +449,149 @@
       color: var(--primary);
     }
 
-    /* Calculadora de Economia para Lojistas */
+    /* Calculadora */
     .calculator-box {
-      background: linear-gradient(135deg, #171720, #111116);
+      background: #14141a;
       border: 1px solid var(--card-border);
-      border-radius: 28px;
-      padding: 45px;
-      margin-top: 50px;
+      border-radius: 22px;
+      padding: clamp(20px, 3vw, 36px);
+      margin-top: 30px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
       align-items: center;
     }
 
-    .calc-input-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .slider-container {
-      margin-top: 15px;
-    }
-
-    .slider-container input[type="range"] {
+    .slider-range {
       width: 100%;
       height: 8px;
-      background: #252530;
-      border-radius: 4px;
-      outline: none;
       accent-color: var(--primary);
+      margin-top: 10px;
     }
 
     .calc-result-box {
       background: rgba(255, 200, 0, 0.05);
       border: 1px dashed var(--primary);
-      border-radius: 20px;
-      padding: 30px;
+      border-radius: 16px;
+      padding: 20px;
       text-align: center;
     }
 
-    /* Onboarding / Formulário WhatsApp */
+    /* Formulário Onboarding */
     .onboard-form-box {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 28px;
-      padding: 40px;
-      max-width: 650px;
+      border-radius: 22px;
+      padding: clamp(20px, 3vw, 32px);
+      max-width: 620px;
       margin: 0 auto;
     }
 
-    .form-group-row {
+    .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 12px;
     }
 
-    .form-field {
+    .form-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 6px;
+      margin-bottom: 12px;
     }
 
-    .form-field label {
-      font-size: 13px;
+    .form-group label {
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-gray);
     }
 
-    .form-field input, .form-field select {
-      background: #0f0f13;
+    .form-group input, .form-group select {
+      background: #0d0d10;
       border: 1px solid var(--card-border);
       color: #fff;
-      padding: 14px 16px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 10px;
       outline: none;
-      font-size: 14px;
-      transition: var(--transition);
+      font-size: 15px; /* Tamanho seguro sem zoom forçado no mobile */
+      width: 100%;
     }
 
-    .form-field input:focus, .form-field select:focus {
+    .form-group input:focus, .form-group select:focus {
       border-color: var(--primary);
     }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--card-border);
-      padding: 60px 0 30px;
+      padding: 40px 0 20px;
       text-align: center;
     }
 
-    .footer-logo {
-      width: 65px;
-      height: 65px;
-      border-radius: 16px;
-      margin-bottom: 16px;
+    .footer-brand {
+      display: inline-flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 10px !important;
+      margin-bottom: 12px !important;
+      white-space: nowrap !important;
     }
 
-    @media (max-width: 992px) {
-      .hero-grid, .calculator-box {
+    /* ========================================================
+       AJUSTES EXCLUSIVOS PARA CELULAR (MOBILE)
+       ======================================================== */
+    @media (max-width: 900px) {
+      .hero-grid {
         grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-badge, .switcher-box, .hero-actions {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-actions .btn-cta {
+        width: 100%;
       }
       .ecosystem-grid {
         grid-template-columns: 1fr;
       }
-      .nav-menu {
-        display: none;
-      }
-      .hero-title {
-        font-size: 40px;
-      }
-      .form-group-row {
+      .calculator-box {
         grid-template-columns: 1fr;
+      }
+      .nav-menu, .nav-actions .btn-cta {
+        display: none !important;
+      }
+      .mobile-menu-btn {
+        display: block !important;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      /* No mobile, as badges não ficam jogadas nas laterais para não quebrar a largura */
+      .float-badge {
+        position: static !important;
+        margin: 6px auto !important;
+        width: 90% !important;
+        justify-content: center !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header Fixo -->
   <header>
     <div class="container nav-wrap">
-      <a href="#" class="brand-logo">
-        <img src="logo.png" alt="Levaê Logo">
-        <div class="brand-name">Leva<span>ê</span></div>
+      
+      <!-- LOGO + NOME (100% HORIZONTAL BLINDADO) -->
+      <a href="#" class="brand-box">
+        <img src="logo.png" alt="Levaê" class="brand-logo-img">
+        <div class="brand-title">Leva<span>ê</span></div>
       </a>
 
+      <!-- Menu Desktop -->
       <ul class="nav-menu">
         <li><a href="#como-funciona">Como Funciona</a></li>
         <li><a href="#lojistas">Para Lojas</a></li>
@@ -535,20 +599,38 @@
         <li><a href="#cadastro">Cadastrar</a></li>
       </ul>
 
-      <a href="#cadastro" class="btn-cta">
-        <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-        Acessar App
-      </a>
+      <!-- Ações Desktop e Botão Mobile -->
+      <div class="nav-actions">
+        <a href="#cadastro" class="btn-cta">
+          <i class="fa-brands fa-whatsapp"></i> Acessar App
+        </a>
+        <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Abrir Menu">
+          <i class="fa-solid fa-bars" id="menuIcon"></i>
+        </button>
+      </div>
+
     </div>
   </header>
+
+  <!-- Gaveta Mobile -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#como-funciona" onclick="toggleMenu()">Como Funciona</a>
+    <a href="#lojistas" onclick="toggleMenu()">Para Lojas</a>
+    <a href="#entregadores" onclick="toggleMenu()">Para Motoristas</a>
+    <a href="#cadastro" onclick="toggleMenu()">Cadastrar Negócio ou Moto</a>
+    <a href="#cadastro" class="btn-cta" onclick="toggleMenu()" style="margin-top: 6px;">
+      <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
+    </a>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="container hero-grid">
       
+      <!-- Lado Esquerdo -->
       <div class="hero-left" data-aos="fade-right">
         <div class="hero-badge">
-          <i class="fa-solid fa-bolt"></i> O Ecossistema Completo de Delivery & Fretes
+          <i class="fa-solid fa-bolt"></i> O SuperApp da Sua Cidade
         </div>
 
         <h1 class="hero-title">
@@ -556,56 +638,57 @@
         </h1>
 
         <p class="hero-subtitle">
-          A <strong>Levaê</strong> integra clientes famintos, os melhores restaurantes e comércios locais, e uma frota de motoristas ágeis com rastreamento ao vivo.
+          A <strong>Levaê</strong> integra clientes, os melhores restaurantes e uma frota de motoristas ágeis com rastreamento ao vivo.
         </p>
 
-        <!-- Switcher de Perfil -->
-        <div class="hero-switcher">
-          <button class="switch-btn active" onclick="trocarApp('cliente', this)">
-            <i class="fa-solid fa-bag-shopping"></i> Sou Cliente
-          </button>
-          <button class="switch-btn" onclick="trocarApp('lojista', this)">
-            <i class="fa-solid fa-store"></i> Sou Lojista
-          </button>
-          <button class="switch-btn" onclick="trocarApp('motorista', this)">
-            <i class="fa-solid fa-motorcycle"></i> Sou Motorista
-          </button>
+        <!-- Switcher Horizontal Touch -->
+        <div class="switcher-container">
+          <div class="switcher-box">
+            <button class="switch-btn active" onclick="trocarApp('cliente', this)">
+              <i class="fa-solid fa-bag-shopping"></i> Sou Cliente
+            </button>
+            <button class="switch-btn" onclick="trocarApp('lojista', this)">
+              <i class="fa-solid fa-store"></i> Sou Lojista
+            </button>
+            <button class="switch-btn" onclick="trocarApp('motorista', this)">
+              <i class="fa-solid fa-motorcycle"></i> Sou Motorista
+            </button>
+          </div>
         </div>
 
-        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+        <div class="hero-actions">
           <a href="#cadastro" class="btn-cta">
             Começar no Levaê Agora
           </a>
           <a href="#como-funciona" class="btn-cta" style="background: transparent; color: #fff; border: 1px solid var(--card-border);">
-            Conhecer Ecossistema
+            Como Funciona
           </a>
         </div>
       </div>
 
-      <!-- Smartphone Interativo -->
-      <div class="mockup-container" data-aos="zoom-in" data-aos-delay="200">
+      <!-- Mockup Mobile Interativo -->
+      <div class="mockup-wrapper" data-aos="zoom-in">
         
-        <div class="float-card float-1">
-          <div style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%;"></div>
+        <div class="float-badge badge-top">
+          <div style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></div>
           <div>
-            <p style="font-size: 12px; font-weight: 700;" id="float-status-title">Restaurante Aceitou</p>
-            <p style="font-size: 10px; color: var(--text-gray);" id="float-status-sub">Tempo de preparo: 15 min</p>
+            <p style="font-size: 11px; font-weight: 700;" id="float-status-title">Restaurante Aceitou</p>
+            <p style="font-size: 9px; color: var(--text-gray);" id="float-status-sub">Preparo: 15 min</p>
           </div>
         </div>
 
         <div class="smartphone">
           <div class="phone-notch"></div>
-          
-          <div class="screen-content" id="screenApp">
-            <!-- Renderizado dinamicamente pelo JavaScript -->
+          <div class="screen-body" id="screenApp">
+            <!-- Conteúdo dinâmico via JS -->
           </div>
         </div>
 
-        <div class="float-card float-2">
-          <i class="fa-solid fa-motorcycle highlight" style="font-size: 18px;"></i>
+        <div class="float-badge badge-bottom">
+          <i class="fa-solid fa-motorcycle highlight" style="font-size: 15px;"></i>
           <div>
-            <p style="font-size: 12px; font-weight: 700;" id="float-driver-title">Moto Mais Próxima</p>
-            <p style="font-size: 10px; color: var(--text-gray);" id="float-driver-sub">Chegando em 4 minutos</p>
+            <p style="font-size: 11px; font-weight: 700;" id="float-driver-title">Moto Mais Próxima</p>
+            <p style="font-size: 9px; color: var(--text-gray);" id="float-driver-sub">Chegando em 4 min</p>
           </div>
         </div>
 
@@ -614,91 +697,88 @@
     </div>
   </section>
 
-  <!-- Ecossistema: As 3 Pontas Integradas -->
+  <!-- Como Funciona / Ecossistema -->
   <section class="section" id="como-funciona">
     <div class="container">
       <div class="section-title" data-aos="fade-up">
         <h2>Como a Levaê revoluciona sua cidade</h2>
-        <p>Um sistema perfeitamente orquestrado para que todos ganhem: quem compra, quem vende e quem entrega.</p>
+        <p>Um sistema perfeitamente orquestrado para conectar quem compra, quem vende e quem entrega.</p>
       </div>
 
       <div class="ecosystem-grid">
         
-        <!-- Ponta 1: Usuário / Cliente -->
+        <!-- Cliente -->
         <div class="eco-card" data-aos="fade-up" data-aos-delay="100">
           <div>
             <div class="eco-icon"><i class="fa-solid fa-burger"></i></div>
             <h3>Para o Usuário</h3>
-            <p>O estilo e conveniência do iFood, mas feito sob medida para o comércio da sua cidade.</p>
+            <p>O estilo e agilidade do iFood feito sob medida para o comércio da sua região.</p>
             <ul>
-              <li><i class="fa-solid fa-check"></i> Comida, farmácia, mercados e compras</li>
-              <li><i class="fa-solid fa-check"></i> Rastreamento do motoboy em tempo real</li>
-              <li><i class="fa-solid fa-check"></i> Envio de encomendas e pacotes avulsos</li>
+              <li><i class="fa-solid fa-check"></i> Comida, bebidas, farmácia e compras</li>
+              <li><i class="fa-solid fa-check"></i> Rastreamento ao vivo no mapa</li>
+              <li><i class="fa-solid fa-check"></i> Frete express para encomendas pessoais</li>
             </ul>
           </div>
-          <button class="btn-cta" style="width: 100%; justify-content: center;" onclick="trocarApp('cliente')">
-            Ver Visão do Usuário
+          <button class="btn-cta" style="width: 100%;" onclick="trocarApp('cliente')">
+            Ver Visão Usuário
           </button>
         </div>
 
-        <!-- Ponta 2: O Lojista -->
+        <!-- Lojista -->
         <div class="eco-card" data-aos="fade-up" data-aos-delay="200" id="lojistas">
           <div>
             <div class="eco-icon"><i class="fa-solid fa-shop"></i></div>
             <h3>Para o Lojista</h3>
-            <p>Aumente seu faturamento sem virar refém de comissões abusivas de até 27% dos grandes apps.</p>
+            <p>Venda muito mais sem perder até 27% em taxas abusivas de outros aplicativos.</p>
             <ul>
-              <li><i class="fa-solid fa-check"></i> Gestor de pedidos intuitivo no PC e celular</li>
-              <li><i class="fa-solid fa-check"></i> Motoboy chamado na hora com 1 clique</li>
-              <li><i class="fa-solid fa-check"></i> Fidelização direta dos seus clientes</li>
+              <li><i class="fa-solid fa-check"></i> Painel de pedidos veloz e intuitivo</li>
+              <li><i class="fa-solid fa-check"></i> Chamada de entregador em 1 clique</li>
+              <li><i class="fa-solid fa-check"></i> Repasse rápido sem complicação</li>
             </ul>
           </div>
-          <button class="btn-cta" style="width: 100%; justify-content: center;" onclick="trocarApp('lojista')">
-            Ver Painel da Loja
+          <button class="btn-cta" style="width: 100%;" onclick="trocarApp('lojista')">
+            Ver Painel Loja
           </button>
         </div>
 
-        <!-- Ponta 3: O Entregador -->
+        <!-- Motorista -->
         <div class="eco-card" data-aos="fade-up" data-aos-delay="300" id="entregadores">
           <div>
             <div class="eco-icon"><i class="fa-solid fa-route"></i></div>
             <h3>Para o Motorista</h3>
-            <p>Ganhe dinheiro com liberdade, alta demanda e suporte humanizado direto pelo WhatsApp.</p>
+            <p>Corridas constantes, taxa transparente e liberdade total de horários.</p>
             <ul>
-              <li><i class="fa-solid fa-check"></i> Rotas otimizadas para economizar combustível</li>
-              <li><i class="fa-solid fa-check"></i> Opção para motos, utilitários e fretes</li>
-              <li><i class="fa-solid fa-check"></i> Repasses transparentes e justos</li>
+              <li><i class="fa-solid fa-check"></i> Rotas dinâmicas e econômicas</li>
+              <li><i class="fa-solid fa-check"></i> Categorias para moto, carro e utilitário</li>
+              <li><i class="fa-solid fa-check"></i> Suporte humanizado no WhatsApp</li>
             </ul>
           </div>
-          <button class="btn-cta" style="width: 100%; justify-content: center;" onclick="trocarApp('motorista')">
-            Ver App do Motorista
+          <button class="btn-cta" style="width: 100%;" onclick="trocarApp('motorista')">
+            Ver App Motorista
           </button>
         </div>
 
       </div>
 
-      <!-- Calculadora de Economia para Lojistas -->
+      <!-- Calculadora Lojista -->
       <div class="calculator-box" data-aos="fade-up">
-        <div class="calc-input-wrap">
-          <span class="highlight" style="font-weight: 700; font-size: 13px;">CALCULADORA DE ECONOMIA</span>
-          <h3 style="font-size: 26px; font-weight: 800;">Dono de loja? Veja quanto você poupa com a Levaê:</h3>
-          <p style="color: var(--text-gray); font-size: 14px;">Arraste para definir seu faturamento médio mensal no delivery tradicional:</p>
+        <div>
+          <span class="highlight" style="font-weight: 700; font-size: 12px;">CALCULADORA DE ECONOMIA</span>
+          <h3 style="font-size: 22px; font-weight: 800; margin: 6px 0;">Veja quanto sua loja poupa com a Levaê:</h3>
+          <p style="color: var(--text-gray); font-size: 13px;">Selecione seu faturamento delivery médio por mês:</p>
           
-          <div class="slider-container">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-              <span>Faturamento Delivery:</span>
-              <strong class="highlight" id="faturamentoTxt">R$ 20.000 /mês</strong>
-            </div>
-            <input type="range" id="faturamentoRange" min="5000" max="100000" step="5000" value="20000" oninput="calcularEconomia(this.value)">
+          <div style="display: flex; justify-content: space-between; margin-top: 14px;">
+            <span style="font-size: 14px;">Faturamento:</span>
+            <strong class="highlight" id="faturamentoTxt">R$ 20.000 /mês</strong>
           </div>
+          <input type="range" class="slider-range" id="faturamentoRange" min="5000" max="100000" step="5000" value="20000" oninput="calcularEconomia(this.value)">
         </div>
 
         <div class="calc-result-box">
-          <span style="font-size: 13px; color: var(--text-gray); display: block; margin-bottom: 6px;">Dinheiro que volta para o seu bolso por ano:</span>
-          <h4 style="font-size: 38px; font-weight: 800; color: #22c55e;" id="economiaTxt">R$ 28.800,00</h4>
-          <p style="font-size: 12px; color: var(--text-gray); margin-top: 8px;">Comparado às taxas padrão de 23% a 27% dos grandes marketplaces.</p>
-          <a href="#cadastro" class="btn-cta" style="margin-top: 20px; font-size: 13px; width: 100%; justify-content: center;">
-            Quero Cadastrar Meu Negócio
+          <span style="font-size: 12px; color: var(--text-gray); display: block;">Economia estimada no seu bolso por ano:</span>
+          <h4 style="font-size: 32px; font-weight: 800; color: #22c55e;" id="economiaTxt">R$ 28.800,00</h4>
+          <a href="#cadastro" class="btn-cta" style="margin-top: 14px; width: 100%;">
+            Cadastrar Meu Negócio
           </a>
         </div>
       </div>
@@ -706,50 +786,50 @@
     </div>
   </section>
 
-  <!-- Cadastro e Entrada de Leads com Disparo para WhatsApp -->
-  <section class="section" id="cadastro" style="background: #0e0e12;">
+  <!-- Cadastro com Envio para WhatsApp -->
+  <section class="section" id="cadastro" style="background: #0d0d11;">
     <div class="container">
       <div class="section-title" data-aos="fade-up">
-        <h2>Entre para a rede da Levaê</h2>
-        <p>Preencha os dados e entraremos em contato diretamente com você pelo WhatsApp.</p>
+        <h2>Faça parte da Levaê</h2>
+        <p>Preencha abaixo para receber o contato da equipe pelo WhatsApp.</p>
       </div>
 
       <div class="onboard-form-box" data-aos="zoom-in">
-        <form id="onboardForm" onsubmit="enviarParaWhatsApp(event)">
+        <form onsubmit="enviarParaWhatsApp(event)">
           
-          <div class="form-field">
-            <label>Qual o seu perfil de interesse?</label>
+          <div class="form-group">
+            <label>Qual o seu perfil?</label>
             <select id="perfilSelect" onchange="atualizarFormulario(this.value)">
-              <option value="lojista">Quero Vender (Restaurante / Loja / Comércio)</option>
+              <option value="lojista">Quero Vender (Restaurante / Loja)</option>
               <option value="motorista">Quero Entregar (Motoboy / Freteiro)</option>
-              <option value="usuario">Sou Cliente (Quero baixar o app / Fazer pedidos)</option>
+              <option value="usuario">Sou Cliente (Fazer Pedidos)</option>
             </select>
           </div>
 
-          <div class="form-group-row">
-            <div class="form-field">
-              <label id="nomeLabel">Nome do Responsável ou Loja</label>
+          <div class="form-row">
+            <div class="form-group">
+              <label id="nomeLabel">Nome da Loja ou Responsável</label>
               <input type="text" id="nomeInput" placeholder="Ex: Hamburgueria Silva" required>
             </div>
-            <div class="form-field">
+            <div class="form-group">
               <label>WhatsApp com DDD</label>
               <input type="tel" id="whatsappInput" placeholder="(00) 00000-0000" required>
             </div>
           </div>
 
-          <div class="form-group-row">
-            <div class="form-field">
+          <div class="form-row">
+            <div class="form-group">
               <label>Sua Cidade / Bairro</label>
               <input type="text" id="cidadeInput" placeholder="Ex: Centro" required>
             </div>
-            <div class="form-field" id="campoExtraWrap">
+            <div class="form-group" id="campoExtraWrap">
               <label>Segmento do Comércio</label>
-              <input type="text" id="extraInput" placeholder="Ex: Lanchonete, Mercado, Açaí...">
+              <input type="text" id="extraInput" placeholder="Ex: Lanchonete, Pizzaria, etc.">
             </div>
           </div>
 
-          <button type="submit" class="btn-cta" style="width: 100%; justify-content: center; padding: 16px; margin-top: 10px;">
-            <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i>
+          <button type="submit" class="btn-cta" style="width: 100%; padding: 14px; margin-top: 6px;">
+            <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
             Concluir Cadastro no WhatsApp
           </button>
         </form>
@@ -757,35 +837,40 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- Footer com Logo e Nome Horizontais -->
   <footer>
     <div class="container">
-      <img src="logo.png" alt="Levaê Logo" class="footer-logo">
-      <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">Leva<span>ê</span></h3>
-      <p style="font-size: 14px; color: var(--text-gray); margin-bottom: 20px;">Seu pedido. Nosso compromisso.</p>
-      <p style="font-size: 12px; color: #555;">&copy; 2026 - JM TECH soluções tecnológicas. Todos os direitos reservados.</p>
+      <div class="footer-brand">
+        <img src="logo.png" alt="Levaê" class="brand-logo-img">
+        <div class="brand-title">Leva<span>ê</span></div>
+      </div>
+      <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 12px;">Seu pedido. Nosso compromisso.</p>
+      <p style="font-size: 11px; color: #555;">&copy; 2026 - JM TECH soluções Tecnológicas. Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- AOS Animation Script -->
+  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
   <script>
-    // Inicializar Animações
-    AOS.init({
-      duration: 800,
-      once: true,
-      easing: 'ease-out-cubic'
-    });
+    AOS.init({ duration: 600, once: true });
 
-    /* ========================================================
-       CONFIGURAÇÃO: SEU NÚMERO DE SUPORTE WHATSAPP
-       ======================================================== */
-    const WHATSAPP_NUMERO = "5599999999999"; // Coloque seu número aqui com DDI e DDD
+    /* INSIRA SEU NÚMERO DE WHATSAPP AQUI */
+    const WHATSAPP_NUMERO = "5599999999999";
 
-    /* ========================================================
-       SIMULADOR DO SMARTPHONE (CLIENTE, LOJISTA, MOTORISTA)
-       ======================================================== */
+    /* Menu Gaveta Mobile */
+    function toggleMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      const icon = document.getElementById('menuIcon');
+      drawer.classList.toggle('open');
+      if (drawer.classList.contains('open')) {
+        icon.className = "fa-solid fa-xmark";
+      } else {
+        icon.className = "fa-solid fa-bars";
+      }
+    }
+
+    /* Simulador de Telas Interativo */
     const screen = document.getElementById('screenApp');
     const floatStatusTitle = document.getElementById('float-status-title');
     const floatStatusSub = document.getElementById('float-status-sub');
@@ -794,83 +879,74 @@
 
     const telas = {
       cliente: `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:8px; border-bottom:1px solid #1a1a24;">
-          <span style="font-size:12px; font-weight:700;"><i class="fa-solid fa-location-dot highlight"></i> Entregar em Casa</span>
-          <i class="fa-solid fa-cart-shopping highlight" style="font-size:14px;"></i>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:6px; border-bottom:1px solid #1a1a24;">
+          <span style="font-size:11px; font-weight:700;"><i class="fa-solid fa-location-dot highlight"></i> Entregar em Casa</span>
+          <i class="fa-solid fa-cart-shopping highlight" style="font-size:13px;"></i>
         </div>
-        <div style="background:#181820; padding:10px 12px; border-radius:12px; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-magnifying-glass" style="font-size:12px; color:var(--text-gray);"></i>
-          <span style="font-size:12px; color:var(--text-gray);">Buscar restaurantes, mercados...</span>
+        <div style="background:#181820; padding:8px 10px; border-radius:10px; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-magnifying-glass" style="font-size:11px; color:var(--text-gray);"></i>
+          <span style="font-size:11px; color:var(--text-gray);">Lanches, pizzas, mercados...</span>
         </div>
-        <div style="font-size:11px; font-weight:700; color:var(--text-gray); margin-top:2px;">CATEGORIAS POPULARES</div>
+        <div style="font-size:10px; font-weight:700; color:var(--text-gray);">DESTAQUES</div>
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; text-align:center;">
-          <div style="background:#14141c; border:1px solid #20202c; padding:8px; border-radius:10px;">
+          <div style="background:#14141c; border:1px solid #20202c; padding:8px 4px; border-radius:10px;">
             <i class="fa-solid fa-burger highlight"></i>
-            <p style="font-size:10px; margin-top:4px;">Burgers</p>
+            <p style="font-size:10px; margin-top:2px;">Burgers</p>
           </div>
-          <div style="background:#14141c; border:1px solid #20202c; padding:8px; border-radius:10px;">
+          <div style="background:#14141c; border:1px solid #20202c; padding:8px 4px; border-radius:10px;">
             <i class="fa-solid fa-pizza-slice highlight"></i>
-            <p style="font-size:10px; margin-top:4px;">Pizzas</p>
+            <p style="font-size:10px; margin-top:2px;">Pizzas</p>
           </div>
-          <div style="background:#14141c; border:1px solid #20202c; padding:8px; border-radius:10px;">
+          <div style="background:#14141c; border:1px solid #20202c; padding:8px 4px; border-radius:10px;">
             <i class="fa-solid fa-box highlight"></i>
-            <p style="font-size:10px; margin-top:4px;">Frete Flash</p>
+            <p style="font-size:10px; margin-top:2px;">Fretes</p>
           </div>
         </div>
         <div style="background:#1a1a22; border-radius:12px; padding:10px; border:1px solid #262635; margin-top:auto;">
           <div style="display:flex; justify-content:space-between; font-size:11px;">
-            <strong>Pedido a caminho</strong>
-            <span class="highlight">12-18 min</span>
+            <strong>Pedido #4102</strong>
+            <span class="highlight">12 min</span>
           </div>
-          <p style="font-size:10px; color:var(--text-gray); margin-top:2px;">Entregador Lucas está levando seu pedido</p>
+          <p style="font-size:10px; color:var(--text-gray); margin-top:2px;">Entregador a caminho com seu pedido</p>
         </div>
       `,
       lojista: `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:8px; border-bottom:1px solid #1a1a24;">
-          <span style="font-size:12px; font-weight:700;"><i class="fa-solid fa-store highlight"></i> Painel da Loja</span>
-          <span style="background:#22c55e20; color:#22c55e; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;">ABERTO</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:6px; border-bottom:1px solid #1a1a24;">
+          <span style="font-size:11px; font-weight:700;"><i class="fa-solid fa-store highlight"></i> Painel da Loja</span>
+          <span style="background:#22c55e20; color:#22c55e; font-size:9px; font-weight:700; padding:2px 6px; border-radius:8px;">ABERTO</span>
         </div>
-        <div style="background:rgba(255,200,0,0.1); border:1px solid var(--primary); padding:10px; border-radius:12px;">
+        <div style="background:rgba(255,200,0,0.08); border:1px solid var(--primary); padding:10px; border-radius:12px;">
           <div style="font-size:10px; color:var(--text-gray);">Vendas de Hoje</div>
           <div style="font-size:18px; font-weight:800; color:var(--primary);">R$ 1.480,00</div>
-          <div style="font-size:10px; color:#22c55e;"><i class="fa-solid fa-arrow-up"></i> +24% que ontem</div>
+          <div style="font-size:10px; color:#22c55e;"><i class="fa-solid fa-arrow-up"></i> +24% hoje</div>
         </div>
-        <div style="font-size:11px; font-weight:700; color:var(--text-gray);">PEDIDOS RECENTES (3)</div>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-          <div style="background:#16161e; padding:8px 10px; border-radius:10px; border:1px solid #22222d; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <p style="font-size:11px; font-weight:700;">#9021 - 2x X-Tudo</p>
-              <span style="font-size:9px; color:var(--text-gray);">Cliente: Marcos V.</span>
-            </div>
-            <button style="background:var(--primary); border:none; color:#000; font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px;">Chamar Moto</button>
+        <div style="font-size:10px; font-weight:700; color:var(--text-gray);">COLETA IMEDIATA</div>
+        <div style="background:#16161e; padding:8px 10px; border-radius:10px; border:1px solid #22222d; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <p style="font-size:11px; font-weight:700;">#9021 - 2x Burgers</p>
+            <span style="font-size:9px; color:var(--text-gray);">Pronto para entrega</span>
           </div>
-          <div style="background:#16161e; padding:8px 10px; border-radius:10px; border:1px solid #22222d; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <p style="font-size:11px; font-weight:700;">#9020 - Pizza Família</p>
-              <span style="font-size:9px; color:#22c55e;">Entregador no local</span>
-            </div>
-            <i class="fa-solid fa-check" style="color:#22c55e; font-size:12px;"></i>
-          </div>
+          <button style="background:var(--primary); border:none; color:#000; font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px;">Chamar Moto</button>
         </div>
       `,
       motorista: `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:8px; border-bottom:1px solid #1a1a24;">
-          <span style="font-size:12px; font-weight:700;"><i class="fa-solid fa-id-badge highlight"></i> Modo Entregador</span>
-          <span style="background:#22c55e20; color:#22c55e; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;">ONLINE</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:6px; border-bottom:1px solid #1a1a24;">
+          <span style="font-size:11px; font-weight:700;"><i class="fa-solid fa-id-badge highlight"></i> Modo Motorista</span>
+          <span style="background:#22c55e20; color:#22c55e; font-size:9px; font-weight:700; padding:2px 6px; border-radius:8px;">ONLINE</span>
         </div>
-        <div style="background:#16161e; border:1px solid #232330; border-radius:14px; padding:12px;">
+        <div style="background:#16161e; border:1px solid #232330; border-radius:12px; padding:10px;">
           <span style="font-size:10px; color:var(--text-gray);">Ganhos do Turno</span>
-          <h3 style="font-size:20px; font-weight:800; color:var(--primary);">R$ 142,50</h3>
-          <p style="font-size:10px; color:var(--text-gray);">9 corridas concluídas</p>
+          <h3 style="font-size:18px; font-weight:800; color:var(--primary);">R$ 142,50</h3>
+          <p style="font-size:9px; color:var(--text-gray);">9 corridas feitas</p>
         </div>
-        <div style="background:#1f1f28; border:1px solid var(--primary); border-radius:14px; padding:12px; animation: pulse 2s infinite;">
+        <div style="background:#1f1f28; border:1px solid var(--primary); border-radius:12px; padding:10px;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:10px; font-weight:700; color:var(--primary);">NOVA CORRIDA DISPONÍVEL</span>
-            <strong style="font-size:13px; color:#22c55e;">R$ 16,00</strong>
+            <span style="font-size:9px; font-weight:700; color:var(--primary);">NOVA CORRIDA</span>
+            <strong style="font-size:12px; color:#22c55e;">R$ 16,00</strong>
           </div>
-          <p style="font-size:11px; font-weight:700; margin-top:4px;">Retirar: Lanchonete Central</p>
-          <p style="font-size:10px; color:var(--text-gray);">Entrega: Bairro Esperança (2.8 km)</p>
-          <button style="width:100%; background:var(--primary); color:#000; border:none; padding:8px; border-radius:8px; font-weight:700; font-size:11px; margin-top:8px;">ACEITAR CORRIDA</button>
+          <p style="font-size:10px; font-weight:700; margin-top:2px;">Lanchonete Central</p>
+          <p style="font-size:9px; color:var(--text-gray);">Entrega no Bairro Novo (2.5 km)</p>
+          <button style="width:100%; background:var(--primary); color:#000; border:none; padding:6px; border-radius:8px; font-weight:700; font-size:10px; margin-top:6px;">ACEITAR</button>
         </div>
       `
     };
@@ -885,44 +961,37 @@
       setTimeout(() => {
         screen.innerHTML = telas[tipo];
         screen.style.opacity = 1;
-      }, 200);
+      }, 150);
 
       if (tipo === 'cliente') {
         floatStatusTitle.innerText = "Restaurante Aceitou";
-        floatStatusSub.innerText = "Tempo de preparo: 15 min";
+        floatStatusSub.innerText = "Preparo: 15 min";
         floatDriverTitle.innerText = "Moto Mais Próxima";
-        floatDriverSub.innerText = "Chegando em 4 minutos";
+        floatDriverSub.innerText = "Chegando em 4 min";
       } else if (tipo === 'lojista') {
         floatStatusTitle.innerText = "Novo Pedido #9021";
         floatStatusSub.innerText = "Valor: R$ 58,00 no Pix";
         floatDriverTitle.innerText = "Moto Alocada";
-        floatDriverSub.innerText = "Coleta estimada: 8 min";
+        floatDriverSub.innerText = "Coleta: 8 min";
       } else {
-        floatStatusTitle.innerText = "Rota Otimizada GPS";
-        floatStatusSub.innerText = "Sem trânsito detectado";
-        floatDriverTitle.innerText = "Taxa Garantida";
+        floatStatusTitle.innerText = "GPS Otimizado";
+        floatStatusSub.innerText = "Sem trânsito na rota";
+        floatDriverTitle.innerText = "Ganho Garantido";
         floatDriverSub.innerText = "R$ 16,00 pela corrida";
       }
     }
 
-    // Inicializa com tela do cliente
     trocarApp('cliente');
 
-    /* ========================================================
-       CALCULADORA DE ECONOMIA PARA LOJISTAS
-       ======================================================== */
+    /* Economia Lojista */
     function calcularEconomia(valor) {
       const v = parseFloat(valor);
       document.getElementById('faturamentoTxt').innerText = v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + " /mês";
-
-      // Média de economia comparando 25% de apps tradicionais com taxa fixa/justa Levaê (~13% de economia líquida anual)
       const economiaAnual = (v * 0.12) * 12;
       document.getElementById('economiaTxt').innerText = economiaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    /* ========================================================
-       FORMULÁRIO INTELIGENTE PARA WHATSAPP
-       ======================================================== */
+    /* Formulário WhatsApp */
     function atualizarFormulario(perfil) {
       const nomeLabel = document.getElementById('nomeLabel');
       const campoExtraWrap = document.getElementById('campoExtraWrap');
@@ -931,23 +1000,23 @@
         nomeLabel.innerText = "Nome do Negócio / Loja";
         campoExtraWrap.innerHTML = `
           <label>Segmento Comercial</label>
-          <input type="text" id="extraInput" placeholder="Ex: Hamburgueria, Açougue, Farmácia...">
+          <input type="text" id="extraInput" placeholder="Ex: Hamburgueria, Pizzaria, etc.">
         `;
       } else if (perfil === 'motorista') {
         nomeLabel.innerText = "Seu Nome Completo";
         campoExtraWrap.innerHTML = `
           <label>Veículo de Trabalho</label>
-          <select id="extraInput" style="background:#0f0f13; border:1px solid var(--card-border); color:#fff; padding:14px 16px; border-radius:12px; outline:none; font-size:14px;">
+          <select id="extraInput">
             <option value="Moto">Moto</option>
-            <option value="Carro/Fiorino">Carro / Fiorino</option>
-            <option value="Caminhão/Van">Caminhão / Van (Fretes)</option>
+            <option value="Carro">Carro / Fiorino</option>
+            <option value="Van/Caminhão">Van / Caminhão</option>
           </select>
         `;
       } else {
         nomeLabel.innerText = "Seu Nome Completo";
         campoExtraWrap.innerHTML = `
           <label>Bairro de Preferência</label>
-          <input type="text" id="extraInput" placeholder="Ex: Onde você costuma pedir">
+          <input type="text" id="extraInput" placeholder="Ex: Onde você mora">
         `;
       }
     }
