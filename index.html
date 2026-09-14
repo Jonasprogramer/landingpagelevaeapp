@@ -2,32 +2,30 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Levaê - O SuperApp da Sua Cidade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Levaê - Atendimento WhatsApp & Cotação Express</title>
 
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- FontAwesome 6 Icons -->
+  <!-- FontAwesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <!-- AOS Animation Library -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
   <style>
     :root {
       --primary: #FFC800;
-      --primary-hover: #e6b400;
+      --primary-glow: rgba(255, 200, 0, 0.4);
       --accent-red: #e52521;
-      --accent-green: #25D366;
-      --bg-dark: #0b0b0e;
-      --card-bg: #141419;
-      --card-border: #23232c;
-      --text-white: #ffffff;
-      --text-gray: #9aa0a6;
-      --transition: all 0.3s ease;
+      --wpp-green: #25D366;
+      --wpp-hover: #1ebd5a;
+      --dark-bg: #0a0a0d;
+      --card-bg: rgba(20, 20, 26, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #ffffff;
+      --text-sub: #9ea3b0;
+      --radius: 22px;
     }
 
     * {
@@ -35,1016 +33,706 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      scroll-behavior: smooth;
-      writing-mode: horizontal-tb !important; /* Trava anti-vertical */
+      -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
-      width: 100%;
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 18px 40px;
+      position: relative;
       overflow-x: hidden;
-      background-color: var(--bg-dark);
-      color: var(--text-white);
-      line-height: 1.5;
     }
 
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 16px;
-    }
-
-    .highlight {
-      color: var(--primary);
-    }
-
-    /* ========================================================
-       CABEÇALHO / HEADER (BLINDADO NA HORIZONTAL)
-       ======================================================== */
-    header {
+    /* Canvas de Partículas Dinâmicas de Fundo */
+    #bg-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 75px;
-      background: rgba(11, 11, 14, 0.96);
-      backdrop-filter: blur(16px);
-      z-index: 1000;
-      border-bottom: 1px solid var(--card-border);
-    }
-
-    .nav-wrap {
       height: 100%;
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      justify-content: space-between !important;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    /* Logo + Texto lado a lado estritamente horizontais */
-    .brand-box {
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      gap: 10px !important;
-      text-decoration: none !important;
-      flex-shrink: 0 !important;
-      white-space: nowrap !important;
-      transform: none !important;
+    /* Brilhos de Luz Fluida */
+    .glow-sphere {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 200, 0, 0.12) 0%, rgba(229, 37, 33, 0.05) 45%, transparent 70%);
+      filter: blur(50px);
+      z-index: 1;
+      pointer-events: none;
+      top: 5%;
     }
 
-    .brand-logo-img {
-      width: 44px !important;
-      height: 44px !important;
-      border-radius: 12px !important;
-      object-fit: cover !important;
-      flex-shrink: 0 !important;
-      display: block !important;
-      border: 1px solid rgba(255, 200, 0, 0.3);
-    }
-
-    .brand-title {
-      display: inline-block !important;
-      font-size: 26px !important;
-      font-weight: 800 !important;
-      color: #ffffff !important;
-      letter-spacing: -0.5px !important;
-      line-height: 1 !important;
-      transform: none !important;
-      writing-mode: horizontal-tb !important;
-      white-space: nowrap !important;
-    }
-
-    .brand-title span {
-      color: var(--primary);
-    }
-
-    .nav-menu {
+    .container {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 2;
       display: flex;
-      flex-direction: row;
-      list-style: none;
-      gap: 24px;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .nav-menu a {
-      color: var(--text-gray);
-      text-decoration: none;
-      font-size: 14px;
+    /* Cartão 3D com a Logo */
+    .logo-card-container {
+      perspective: 1000px;
+      margin-bottom: 20px;
+    }
+
+    .logo-3d-card {
+      width: 140px;
+      height: 140px;
+      border-radius: 36px;
+      background: linear-gradient(145deg, #1b1b22, #101014);
+      border: 1px solid var(--card-border);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 30px var(--primary-glow);
+      transition: transform 0.15s ease-out;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .logo-3d-card img {
+      width: 100%;
+      height: 100%;
+      border-radius: 30px;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    /* Status Badge Online */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37, 211, 102, 0.1);
+      border: 1px solid rgba(37, 211, 102, 0.25);
+      color: var(--wpp-green);
+      font-size: 13px;
       font-weight: 600;
-      transition: var(--transition);
-      white-space: nowrap;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+      backdrop-filter: blur(10px);
     }
 
-    .nav-menu a:hover {
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--wpp-green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--wpp-green);
+      animation: pulseAnim 1.6s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    h1 span {
       color: var(--primary);
     }
 
-    .btn-cta {
-      background-color: var(--primary);
-      color: #000;
+    .tagline {
+      color: var(--text-sub);
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    /* Botão Principal Gigante do WhatsApp */
+    .btn-main-wpp {
+      width: 100%;
+      background: linear-gradient(135deg, #25D366, #1fad52);
+      color: #fff;
+      padding: 18px 22px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 17px;
       font-weight: 700;
-      padding: 10px 20px;
-      border-radius: 50px;
       text-decoration: none;
-      display: inline-flex;
+      box-shadow: 0 12px 28px rgba(37, 211, 102, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-main-wpp::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: rotate(30deg);
+      animation: lightSweep 3.5s infinite;
+    }
+
+    @keyframes lightSweep {
+      0% { left: -60%; }
+      30%, 100% { left: 140%; }
+    }
+
+    .btn-main-wpp:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 16px 35px rgba(37, 211, 102, 0.5);
+    }
+
+    /* Abas de Navegação / Ações Rápidas */
+    .tabs-header {
+      width: 100%;
+      display: flex;
+      background: rgba(22, 22, 28, 0.7);
+      border: 1px solid var(--card-border);
+      padding: 5px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .tab-item {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--text-sub);
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .tab-item.active {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 4px 15px rgba(255, 200, 0, 0.25);
+    }
+
+    /* Painéis de Conteúdo */
+    .tab-panel {
+      width: 100%;
+      display: none;
+      animation: fadeIn 0.35s ease forwards;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Simulador de Orçamento Direto no WhatsApp */
+    .calc-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .calc-types {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .type-btn {
+      background: #111116;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: var(--text-sub);
+      font-size: 11px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .type-btn i {
+      font-size: 18px;
+    }
+
+    .type-btn.selected {
+      background: rgba(255, 200, 0, 0.12);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .type-btn.selected i {
+      color: var(--primary);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .input-box {
+      background: #111116;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-box i {
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .input-box input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .input-box input::placeholder {
+      color: #555866;
+    }
+
+    .btn-send-calc {
+      width: 100%;
+      background: var(--primary);
+      color: #000;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: var(--transition);
-      border: none;
       cursor: pointer;
-      white-space: nowrap;
-      font-size: 14px;
+      transition: 0.2s;
     }
 
-    .btn-cta:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-2px);
+    .btn-send-calc:hover {
+      background: #e5b300;
     }
 
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 22px;
-      cursor: pointer;
-      padding: 8px;
-    }
-
-    /* Menu Gaveta Mobile */
-    .mobile-drawer {
-      position: fixed;
-      top: 75px;
-      left: 0;
-      width: 100%;
-      background: #0f0f13;
-      border-bottom: 2px solid var(--card-border);
-      padding: 18px;
-      display: none;
-      flex-direction: column;
-      gap: 14px;
-      z-index: 999;
-    }
-
-    .mobile-drawer.open {
-      display: flex;
-    }
-
-    .mobile-drawer a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 8px 0;
-      border-bottom: 1px solid #1c1c24;
-    }
-
-    /* ========================================================
-       HERO SECTION
-       ======================================================== */
-    .hero-section {
-      padding: 105px 0 50px;
-      position: relative;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      background: rgba(255, 200, 0, 0.08);
-      border: 1px solid rgba(255, 200, 0, 0.25);
-      border-radius: 50px;
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-
-    .hero-title {
-      font-size: clamp(28px, 4.5vw, 50px);
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-    }
-
-    .hero-subtitle {
-      font-size: clamp(14px, 2vw, 16px);
-      color: var(--text-gray);
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-
-    /* Switcher com Scroll Touch no Mobile */
-    .switcher-container {
-      width: 100%;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      -webkit-overflow-scrolling: touch;
-      margin-bottom: 24px;
-      scrollbar-width: none;
-    }
-
-    .switcher-container::-webkit-scrollbar {
-      display: none;
-    }
-
-    .switcher-box {
-      display: flex;
-      flex-direction: row;
-      gap: 6px;
-      background: rgba(20, 20, 25, 0.9);
-      padding: 5px;
-      border-radius: 14px;
-      border: 1px solid var(--card-border);
-      width: max-content;
-    }
-
-    .switch-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-gray);
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: var(--transition);
-      white-space: nowrap;
-    }
-
-    .switch-btn.active {
-      background: var(--primary);
-      color: #000;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* Mockup Mobile Interativo */
-    .mockup-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      margin: 15px 0;
-    }
-
-    .smartphone {
-      width: 290px;
-      height: 540px;
-      max-width: 90vw;
-      background: #111115;
-      border: 8px solid #282830;
-      border-radius: 38px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 200, 0, 0.12);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .phone-notch {
-      width: 110px;
-      height: 18px;
-      background: #282830;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-      margin: 0 auto;
-      z-index: 10;
-    }
-
-    .screen-body {
-      flex: 1;
-      padding: 12px;
+    /* Lista de Ações Pré-programadas */
+    .links-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      background: #0d0d10;
-      transition: opacity 0.25s ease;
-      overflow: hidden;
+      width: 100%;
     }
 
-    /* Badges Flutuantes Desktop */
-    .float-badge {
-      position: absolute;
-      background: rgba(22, 22, 28, 0.95);
-      border: 1px solid var(--card-border);
-      padding: 10px 14px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      z-index: 10;
-      white-space: nowrap;
-    }
-
-    .badge-top { top: 6%; left: -10px; }
-    .badge-bottom { bottom: 6%; right: -10px; }
-
-    /* ========================================================
-       SEÇÕES & CARDS
-       ======================================================== */
-    .section {
-      padding: 60px 0;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .section-title h2 {
-      font-size: clamp(24px, 3.5vw, 34px);
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .section-title p {
-      color: var(--text-gray);
-      font-size: 14px;
-      max-width: 580px;
-      margin: 0 auto;
-    }
-
-    .ecosystem-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .eco-card {
+    .link-row {
       background: var(--card-bg);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 24px 20px;
+      padding: 14px 18px;
+      border-radius: 16px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
-      transition: var(--transition);
+      text-decoration: none;
+      color: #fff;
+      transition: all 0.25s ease;
     }
 
-    .eco-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-4px);
+    .link-row:hover {
+      background: #1b1b24;
+      border-color: rgba(255, 200, 0, 0.4);
+      transform: translateX(4px);
     }
 
-    .eco-icon {
-      width: 50px;
-      height: 50px;
+    .link-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .link-icon-box {
+      width: 38px;
+      height: 38px;
       background: rgba(255, 200, 0, 0.1);
-      border-radius: 12px;
+      border-radius: 10px;
       display: grid;
       place-items: center;
-      font-size: 22px;
       color: var(--primary);
-      margin-bottom: 16px;
+      font-size: 16px;
     }
 
-    .eco-card h3 {
-      font-size: 19px;
-      font-weight: 700;
-      margin-bottom: 8px;
+    .link-text strong {
+      display: block;
+      font-size: 14px;
     }
 
-    .eco-card p {
-      color: var(--text-gray);
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 16px;
+    .link-text span {
+      font-size: 11px;
+      color: var(--text-sub);
     }
 
-    .eco-card ul {
-      list-style: none;
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .eco-card ul li {
-      font-size: 13px;
+    /* Toast Flutuante (Notificações em Tempo Real) */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(23, 23, 30, 0.92);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      padding: 12px 18px;
+      border-radius: 50px;
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .eco-card ul li i {
-      color: var(--primary);
-    }
-
-    /* Calculadora */
-    .calculator-box {
-      background: #14141a;
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: clamp(20px, 3vw, 36px);
-      margin-top: 30px;
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .slider-range {
-      width: 100%;
-      height: 8px;
-      accent-color: var(--primary);
-      margin-top: 10px;
-    }
-
-    .calc-result-box {
-      background: rgba(255, 200, 0, 0.05);
-      border: 1px dashed var(--primary);
-      border-radius: 16px;
-      padding: 20px;
-      text-align: center;
-    }
-
-    /* Formulário Onboarding */
-    .onboard-form-box {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: clamp(20px, 3vw, 32px);
-      max-width: 620px;
-      margin: 0 auto;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .form-group label {
       font-size: 12px;
-      font-weight: 600;
-      color: var(--text-gray);
-    }
-
-    .form-group input, .form-group select {
-      background: #0d0d10;
-      border: 1px solid var(--card-border);
       color: #fff;
-      padding: 12px;
-      border-radius: 10px;
-      outline: none;
-      font-size: 15px; /* Tamanho seguro sem zoom forçado no mobile */
-      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 100;
+      white-space: nowrap;
     }
 
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--primary);
+    .toast-box.visible {
+      transform: translateX(-50%) translateY(0);
     }
 
-    /* Footer */
+    .toast-icon {
+      color: var(--primary);
+      font-size: 16px;
+    }
+
     footer {
-      border-top: 1px solid var(--card-border);
-      padding: 40px 0 20px;
+      margin-top: 30px;
       text-align: center;
-    }
-
-    .footer-brand {
-      display: inline-flex !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      gap: 10px !important;
-      margin-bottom: 12px !important;
-      white-space: nowrap !important;
-    }
-
-    /* ========================================================
-       AJUSTES EXCLUSIVOS PARA CELULAR (MOBILE)
-       ======================================================== */
-    @media (max-width: 900px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-      .hero-badge, .switcher-box, .hero-actions {
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .hero-actions .btn-cta {
-        width: 100%;
-      }
-      .ecosystem-grid {
-        grid-template-columns: 1fr;
-      }
-      .calculator-box {
-        grid-template-columns: 1fr;
-      }
-      .nav-menu, .nav-actions .btn-cta {
-        display: none !important;
-      }
-      .mobile-menu-btn {
-        display: block !important;
-      }
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      /* No mobile, as badges não ficam jogadas nas laterais para não quebrar a largura */
-      .float-badge {
-        position: static !important;
-        margin: 6px auto !important;
-        width: 90% !important;
-        justify-content: center !important;
-      }
+      font-size: 12px;
+      color: var(--text-sub);
+      position: relative;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header Fixo -->
-  <header>
-    <div class="container nav-wrap">
-      
-      <!-- LOGO + NOME (100% HORIZONTAL BLINDADO) -->
-      <a href="#" class="brand-box">
-        <img src="logo.png" alt="Levaê" class="brand-logo-img">
-        <div class="brand-title">Leva<span>ê</span></div>
-      </a>
+  <!-- Canvas das Partículas de Fundo -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="glow-sphere"></div>
 
-      <!-- Menu Desktop -->
-      <ul class="nav-menu">
-        <li><a href="#como-funciona">Como Funciona</a></li>
-        <li><a href="#lojistas">Para Lojas</a></li>
-        <li><a href="#entregadores">Para Motoristas</a></li>
-        <li><a href="#cadastro">Cadastrar</a></li>
-      </ul>
+  <div class="container">
+    
+    <!-- Card Interativo 3D com Logo -->
+    <div class="logo-card-container">
+      <div class="logo-3d-card" id="logoCard">
+        <img src="logo.png" alt="Levaê Express">
+      </div>
+    </div>
 
-      <!-- Ações Desktop e Botão Mobile -->
-      <div class="nav-actions">
-        <a href="#cadastro" class="btn-cta">
-          <i class="fa-brands fa-whatsapp"></i> Acessar App
-        </a>
-        <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Abrir Menu">
-          <i class="fa-solid fa-bars" id="menuIcon"></i>
+    <!-- Status Online com Pulso -->
+    <div class="status-badge">
+      <div class="pulse"></div> Atendimento Online Agora
+    </div>
+
+    <!-- Identidade Principal -->
+    <h1>Leva<span>ê</span></h1>
+    <p class="tagline">Seu pedido. Nosso compromisso.</p>
+
+    <!-- Botão Rápido de Conversão Direta -->
+    <a href="#" class="btn-main-wpp" onclick="abrirWppGeral(event)">
+      <i class="fa-brands fa-whatsapp" style="font-size: 24px;"></i>
+      Chamar no WhatsApp
+    </a>
+
+    <!-- Abas Interativas -->
+    <div class="tabs-header">
+      <button class="tab-item active" onclick="trocarAba('orcamento', this)">
+        <i class="fa-solid fa-calculator"></i> Cotação Express
+      </button>
+      <button class="tab-item" onclick="trocarAba('opcoes', this)">
+        <i class="fa-solid fa-list-check"></i> Falar com Setor
+      </button>
+    </div>
+
+    <!-- Aba 1: Calculadora & Orçamento que Monta a Mensagem do WhatsApp -->
+    <div class="tab-panel active" id="panel-orcamento">
+      <div class="calc-card">
+        
+        <div class="calc-types">
+          <div class="type-btn selected" onclick="selecionarTipo('Moto Express (Encomenda pequena)', this)">
+            <i class="fa-solid fa-motorcycle"></i>
+            <span>Moto</span>
+          </div>
+          <div class="type-btn" onclick="selecionarTipo('Carro / Utilitário (Médio porte)', this)">
+            <i class="fa-solid fa-car"></i>
+            <span>Utilitário</span>
+          </div>
+          <div class="type-btn" onclick="selecionarTipo('Frete / Mudança (Cargas grandes)', this)">
+            <i class="fa-solid fa-truck-moving"></i>
+            <span>Frete</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-box">
+            <i class="fa-solid fa-circle-dot"></i>
+            <input type="text" id="origemInput" placeholder="Onde retira? (Bairro ou Rua)">
+          </div>
+          <div class="input-box">
+            <i class="fa-solid fa-location-dot"></i>
+            <input type="text" id="destinoInput" placeholder="Onde entrega? (Bairro ou Rua)">
+          </div>
+        </div>
+
+        <button class="btn-send-calc" onclick="enviarOrcamentoWpp()">
+          <i class="fa-brands fa-whatsapp"></i> Enviar Cotação Pronta
         </button>
       </div>
-
     </div>
-  </header>
 
-  <!-- Gaveta Mobile -->
-  <div class="mobile-drawer" id="mobileDrawer">
-    <a href="#como-funciona" onclick="toggleMenu()">Como Funciona</a>
-    <a href="#lojistas" onclick="toggleMenu()">Para Lojas</a>
-    <a href="#entregadores" onclick="toggleMenu()">Para Motoristas</a>
-    <a href="#cadastro" onclick="toggleMenu()">Cadastrar Negócio ou Moto</a>
-    <a href="#cadastro" class="btn-cta" onclick="toggleMenu()" style="margin-top: 6px;">
-      <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
-    </a>
+    <!-- Aba 2: Direcionamentos por Setor -->
+    <div class="tab-panel" id="panel-opcoes">
+      <div class="links-list">
+        
+        <a href="#" class="link-row" onclick="abrirLinkComMsg('Olá! Gostaria de falar com o suporte sobre uma entrega em andamento.')">
+          <div class="link-left">
+            <div class="link-icon-box"><i class="fa-solid fa-headset"></i></div>
+            <div class="link-text">
+              <strong>Suporte ao Cliente</strong>
+              <span>Dúvidas sobre entregas e pedidos</span>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color: #444; font-size: 13px;"></i>
+        </a>
+
+        <a href="#" class="link-row" onclick="abrirLinkComMsg('Olá! Tenho uma empresa/loja e gostaria de fechar uma parceria de entregas com a Levaê.')">
+          <div class="link-left">
+            <div class="link-icon-box"><i class="fa-solid fa-store"></i></div>
+            <div class="link-text">
+              <strong>Parceria para Lojistas</strong>
+              <span>Preços especiais para empresas</span>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color: #444; font-size: 13px;"></i>
+        </a>
+
+        <a href="#" class="link-row" onclick="abrirLinkComMsg('Olá! Gostaria de saber como me cadastrar para rodar como entregador parceiro da Levaê.')">
+          <div class="link-left">
+            <div class="link-icon-box"><i class="fa-solid fa-id-card"></i></div>
+            <div class="link-text">
+              <strong>Quero ser Entregador</strong>
+              <span>Trabalhe com sua moto ou utilitário</span>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color: #444; font-size: 13px;"></i>
+        </a>
+
+      </div>
+    </div>
+
   </div>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="container hero-grid">
-      
-      <!-- Lado Esquerdo -->
-      <div class="hero-left" data-aos="fade-right">
-        <div class="hero-badge">
-          <i class="fa-solid fa-bolt"></i> O SuperApp da Sua Cidade
-        </div>
+  <!-- Toast Notificação Dinâmica -->
+  <div class="toast-box" id="toast">
+    <i class="fa-solid fa-bell toast-icon"></i>
+    <span id="toast-text">Novo pedido coletado com sucesso!</span>
+  </div>
 
-        <h1 class="hero-title">
-          Tudo da sua cidade em um <span class="highlight">só aplicativo.</span>
-        </h1>
-
-        <p class="hero-subtitle">
-          A <strong>Levaê</strong> integra clientes, os melhores restaurantes e uma frota de motoristas ágeis com rastreamento ao vivo.
-        </p>
-
-        <!-- Switcher Horizontal Touch -->
-        <div class="switcher-container">
-          <div class="switcher-box">
-            <button class="switch-btn active" onclick="trocarApp('cliente', this)">
-              <i class="fa-solid fa-bag-shopping"></i> Sou Cliente
-            </button>
-            <button class="switch-btn" onclick="trocarApp('lojista', this)">
-              <i class="fa-solid fa-store"></i> Sou Lojista
-            </button>
-            <button class="switch-btn" onclick="trocarApp('motorista', this)">
-              <i class="fa-solid fa-motorcycle"></i> Sou Motorista
-            </button>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <a href="#cadastro" class="btn-cta">
-            Começar no Levaê Agora
-          </a>
-          <a href="#como-funciona" class="btn-cta" style="background: transparent; color: #fff; border: 1px solid var(--card-border);">
-            Como Funciona
-          </a>
-        </div>
-      </div>
-
-      <!-- Mockup Mobile Interativo -->
-      <div class="mockup-wrapper" data-aos="zoom-in">
-        
-        <div class="float-badge badge-top">
-          <div style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></div>
-          <div>
-            <p style="font-size: 11px; font-weight: 700;" id="float-status-title">Restaurante Aceitou</p>
-            <p style="font-size: 9px; color: var(--text-gray);" id="float-status-sub">Preparo: 15 min</p>
-          </div>
-        </div>
-
-        <div class="smartphone">
-          <div class="phone-notch"></div>
-          <div class="screen-body" id="screenApp">
-            <!-- Conteúdo dinâmico via JS -->
-          </div>
-        </div>
-
-        <div class="float-badge badge-bottom">
-          <i class="fa-solid fa-motorcycle highlight" style="font-size: 15px;"></i>
-          <div>
-            <p style="font-size: 11px; font-weight: 700;" id="float-driver-title">Moto Mais Próxima</p>
-            <p style="font-size: 9px; color: var(--text-gray);" id="float-driver-sub">Chegando em 4 min</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Como Funciona / Ecossistema -->
-  <section class="section" id="como-funciona">
-    <div class="container">
-      <div class="section-title" data-aos="fade-up">
-        <h2>Como a Levaê revoluciona sua cidade</h2>
-        <p>Um sistema perfeitamente orquestrado para conectar quem compra, quem vende e quem entrega.</p>
-      </div>
-
-      <div class="ecosystem-grid">
-        
-        <!-- Cliente -->
-        <div class="eco-card" data-aos="fade-up" data-aos-delay="100">
-          <div>
-            <div class="eco-icon"><i class="fa-solid fa-burger"></i></div>
-            <h3>Para o Usuário</h3>
-            <p>O estilo e agilidade do iFood feito sob medida para o comércio da sua região.</p>
-            <ul>
-              <li><i class="fa-solid fa-check"></i> Comida, bebidas, farmácia e compras</li>
-              <li><i class="fa-solid fa-check"></i> Rastreamento ao vivo no mapa</li>
-              <li><i class="fa-solid fa-check"></i> Frete express para encomendas pessoais</li>
-            </ul>
-          </div>
-          <button class="btn-cta" style="width: 100%;" onclick="trocarApp('cliente')">
-            Ver Visão Usuário
-          </button>
-        </div>
-
-        <!-- Lojista -->
-        <div class="eco-card" data-aos="fade-up" data-aos-delay="200" id="lojistas">
-          <div>
-            <div class="eco-icon"><i class="fa-solid fa-shop"></i></div>
-            <h3>Para o Lojista</h3>
-            <p>Venda muito mais sem perder até 27% em taxas abusivas de outros aplicativos.</p>
-            <ul>
-              <li><i class="fa-solid fa-check"></i> Painel de pedidos veloz e intuitivo</li>
-              <li><i class="fa-solid fa-check"></i> Chamada de entregador em 1 clique</li>
-              <li><i class="fa-solid fa-check"></i> Repasse rápido sem complicação</li>
-            </ul>
-          </div>
-          <button class="btn-cta" style="width: 100%;" onclick="trocarApp('lojista')">
-            Ver Painel Loja
-          </button>
-        </div>
-
-        <!-- Motorista -->
-        <div class="eco-card" data-aos="fade-up" data-aos-delay="300" id="entregadores">
-          <div>
-            <div class="eco-icon"><i class="fa-solid fa-route"></i></div>
-            <h3>Para o Motorista</h3>
-            <p>Corridas constantes, taxa transparente e liberdade total de horários.</p>
-            <ul>
-              <li><i class="fa-solid fa-check"></i> Rotas dinâmicas e econômicas</li>
-              <li><i class="fa-solid fa-check"></i> Categorias para moto, carro e utilitário</li>
-              <li><i class="fa-solid fa-check"></i> Suporte humanizado no WhatsApp</li>
-            </ul>
-          </div>
-          <button class="btn-cta" style="width: 100%;" onclick="trocarApp('motorista')">
-            Ver App Motorista
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Calculadora Lojista -->
-      <div class="calculator-box" data-aos="fade-up">
-        <div>
-          <span class="highlight" style="font-weight: 700; font-size: 12px;">CALCULADORA DE ECONOMIA</span>
-          <h3 style="font-size: 22px; font-weight: 800; margin: 6px 0;">Veja quanto sua loja poupa com a Levaê:</h3>
-          <p style="color: var(--text-gray); font-size: 13px;">Selecione seu faturamento delivery médio por mês:</p>
-          
-          <div style="display: flex; justify-content: space-between; margin-top: 14px;">
-            <span style="font-size: 14px;">Faturamento:</span>
-            <strong class="highlight" id="faturamentoTxt">R$ 20.000 /mês</strong>
-          </div>
-          <input type="range" class="slider-range" id="faturamentoRange" min="5000" max="100000" step="5000" value="20000" oninput="calcularEconomia(this.value)">
-        </div>
-
-        <div class="calc-result-box">
-          <span style="font-size: 12px; color: var(--text-gray); display: block;">Economia estimada no seu bolso por ano:</span>
-          <h4 style="font-size: 32px; font-weight: 800; color: #22c55e;" id="economiaTxt">R$ 28.800,00</h4>
-          <a href="#cadastro" class="btn-cta" style="margin-top: 14px; width: 100%;">
-            Cadastrar Meu Negócio
-          </a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Cadastro com Envio para WhatsApp -->
-  <section class="section" id="cadastro" style="background: #0d0d11;">
-    <div class="container">
-      <div class="section-title" data-aos="fade-up">
-        <h2>Faça parte da Levaê</h2>
-        <p>Preencha abaixo para receber o contato da equipe pelo WhatsApp.</p>
-      </div>
-
-      <div class="onboard-form-box" data-aos="zoom-in">
-        <form onsubmit="enviarParaWhatsApp(event)">
-          
-          <div class="form-group">
-            <label>Qual o seu perfil?</label>
-            <select id="perfilSelect" onchange="atualizarFormulario(this.value)">
-              <option value="lojista">Quero Vender (Restaurante / Loja)</option>
-              <option value="motorista">Quero Entregar (Motoboy / Freteiro)</option>
-              <option value="usuario">Sou Cliente (Fazer Pedidos)</option>
-            </select>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label id="nomeLabel">Nome da Loja ou Responsável</label>
-              <input type="text" id="nomeInput" placeholder="Ex: Hamburgueria Silva" required>
-            </div>
-            <div class="form-group">
-              <label>WhatsApp com DDD</label>
-              <input type="tel" id="whatsappInput" placeholder="(00) 00000-0000" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Sua Cidade / Bairro</label>
-              <input type="text" id="cidadeInput" placeholder="Ex: Centro" required>
-            </div>
-            <div class="form-group" id="campoExtraWrap">
-              <label>Segmento do Comércio</label>
-              <input type="text" id="extraInput" placeholder="Ex: Lanchonete, Pizzaria, etc.">
-            </div>
-          </div>
-
-          <button type="submit" class="btn-cta" style="width: 100%; padding: 14px; margin-top: 6px;">
-            <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-            Concluir Cadastro no WhatsApp
-          </button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer com Logo e Nome Horizontais -->
+  <!-- Rodapé -->
   <footer>
-    <div class="container">
-      <div class="footer-brand">
-        <img src="logo.png" alt="Levaê" class="brand-logo-img">
-        <div class="brand-title">Leva<span>ê</span></div>
-      </div>
-      <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 12px;">Seu pedido. Nosso compromisso.</p>
-      <p style="font-size: 11px; color: #555;">&copy; 2026 - JM TECH soluções Tecnológicas. Todos os direitos reservados.</p>
-    </div>
+    <p><strong>Levaê</strong> &copy; 2026 • Tecnologia & Entregas Rápidas</p>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
+  <!-- Scripts: Efeito 3D, Partículas e WhatsApp Engine -->
   <script>
-    AOS.init({ duration: 600, once: true });
+    /* ========================================================
+       CONFIGURAÇÃO: COLOQUE SEU NÚMERO DE WHATSAPP AQUI
+       (Apenas dígitos com DDI 55 + DDD + Número)
+       ======================================================== */
+    const SEU_NUMERO_WHATSAPP = "5599999999999"; 
 
-    /* INSIRA SEU NÚMERO DE WHATSAPP AQUI */
-    const WHATSAPP_NUMERO = "5599999999999";
+    // Estado da seleção do tipo de veículo
+    let tipoVeiculoSelecionado = "Moto Express (Encomenda pequena)";
 
-    /* Menu Gaveta Mobile */
-    function toggleMenu() {
-      const drawer = document.getElementById('mobileDrawer');
-      const icon = document.getElementById('menuIcon');
-      drawer.classList.toggle('open');
-      if (drawer.classList.contains('open')) {
-        icon.className = "fa-solid fa-xmark";
-      } else {
-        icon.className = "fa-solid fa-bars";
-      }
+    function selecionarTipo(tipo, el) {
+      document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('selected'));
+      el.classList.add('selected');
+      tipoVeiculoSelecionado = tipo;
+      if (navigator.vibrate) navigator.vibrate(30);
     }
 
-    /* Simulador de Telas Interativo */
-    const screen = document.getElementById('screenApp');
-    const floatStatusTitle = document.getElementById('float-status-title');
-    const floatStatusSub = document.getElementById('float-status-sub');
-    const floatDriverTitle = document.getElementById('float-driver-title');
-    const floatDriverSub = document.getElementById('float-driver-sub');
-
-    const telas = {
-      cliente: `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:6px; border-bottom:1px solid #1a1a24;">
-          <span style="font-size:11px; font-weight:700;"><i class="fa-solid fa-location-dot highlight"></i> Entregar em Casa</span>
-          <i class="fa-solid fa-cart-shopping highlight" style="font-size:13px;"></i>
-        </div>
-        <div style="background:#181820; padding:8px 10px; border-radius:10px; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-magnifying-glass" style="font-size:11px; color:var(--text-gray);"></i>
-          <span style="font-size:11px; color:var(--text-gray);">Lanches, pizzas, mercados...</span>
-        </div>
-        <div style="font-size:10px; font-weight:700; color:var(--text-gray);">DESTAQUES</div>
-        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; text-align:center;">
-          <div style="background:#14141c; border:1px solid #20202c; padding:8px 4px; border-radius:10px;">
-            <i class="fa-solid fa-burger highlight"></i>
-            <p style="font-size:10px; margin-top:2px;">Burgers</p>
-          </div>
-          <div style="background:#14141c; border:1px solid #20202c; padding:8px 4px; border-radius:10px;">
-            <i class="fa-solid fa-pizza-slice highlight"></i>
-            <p style="font-size:10px; margin-top:2px;">Pizzas</p>
-          </div>
-          <div style="background:#14141c; border:1px solid #20202c; padding:8px 4px; border-radius:10px;">
-            <i class="fa-solid fa-box highlight"></i>
-            <p style="font-size:10px; margin-top:2px;">Fretes</p>
-          </div>
-        </div>
-        <div style="background:#1a1a22; border-radius:12px; padding:10px; border:1px solid #262635; margin-top:auto;">
-          <div style="display:flex; justify-content:space-between; font-size:11px;">
-            <strong>Pedido #4102</strong>
-            <span class="highlight">12 min</span>
-          </div>
-          <p style="font-size:10px; color:var(--text-gray); margin-top:2px;">Entregador a caminho com seu pedido</p>
-        </div>
-      `,
-      lojista: `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:6px; border-bottom:1px solid #1a1a24;">
-          <span style="font-size:11px; font-weight:700;"><i class="fa-solid fa-store highlight"></i> Painel da Loja</span>
-          <span style="background:#22c55e20; color:#22c55e; font-size:9px; font-weight:700; padding:2px 6px; border-radius:8px;">ABERTO</span>
-        </div>
-        <div style="background:rgba(255,200,0,0.08); border:1px solid var(--primary); padding:10px; border-radius:12px;">
-          <div style="font-size:10px; color:var(--text-gray);">Vendas de Hoje</div>
-          <div style="font-size:18px; font-weight:800; color:var(--primary);">R$ 1.480,00</div>
-          <div style="font-size:10px; color:#22c55e;"><i class="fa-solid fa-arrow-up"></i> +24% hoje</div>
-        </div>
-        <div style="font-size:10px; font-weight:700; color:var(--text-gray);">COLETA IMEDIATA</div>
-        <div style="background:#16161e; padding:8px 10px; border-radius:10px; border:1px solid #22222d; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <p style="font-size:11px; font-weight:700;">#9021 - 2x Burgers</p>
-            <span style="font-size:9px; color:var(--text-gray);">Pronto para entrega</span>
-          </div>
-          <button style="background:var(--primary); border:none; color:#000; font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px;">Chamar Moto</button>
-        </div>
-      `,
-      motorista: `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:6px; border-bottom:1px solid #1a1a24;">
-          <span style="font-size:11px; font-weight:700;"><i class="fa-solid fa-id-badge highlight"></i> Modo Motorista</span>
-          <span style="background:#22c55e20; color:#22c55e; font-size:9px; font-weight:700; padding:2px 6px; border-radius:8px;">ONLINE</span>
-        </div>
-        <div style="background:#16161e; border:1px solid #232330; border-radius:12px; padding:10px;">
-          <span style="font-size:10px; color:var(--text-gray);">Ganhos do Turno</span>
-          <h3 style="font-size:18px; font-weight:800; color:var(--primary);">R$ 142,50</h3>
-          <p style="font-size:9px; color:var(--text-gray);">9 corridas feitas</p>
-        </div>
-        <div style="background:#1f1f28; border:1px solid var(--primary); border-radius:12px; padding:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:9px; font-weight:700; color:var(--primary);">NOVA CORRIDA</span>
-            <strong style="font-size:12px; color:#22c55e;">R$ 16,00</strong>
-          </div>
-          <p style="font-size:10px; font-weight:700; margin-top:2px;">Lanchonete Central</p>
-          <p style="font-size:9px; color:var(--text-gray);">Entrega no Bairro Novo (2.5 km)</p>
-          <button style="width:100%; background:var(--primary); color:#000; border:none; padding:6px; border-radius:8px; font-weight:700; font-size:10px; margin-top:6px;">ACEITAR</button>
-        </div>
-      `
-    };
-
-    function trocarApp(tipo, btn) {
-      if (btn) {
-        document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      }
-
-      screen.style.opacity = 0;
-      setTimeout(() => {
-        screen.innerHTML = telas[tipo];
-        screen.style.opacity = 1;
-      }, 150);
-
-      if (tipo === 'cliente') {
-        floatStatusTitle.innerText = "Restaurante Aceitou";
-        floatStatusSub.innerText = "Preparo: 15 min";
-        floatDriverTitle.innerText = "Moto Mais Próxima";
-        floatDriverSub.innerText = "Chegando em 4 min";
-      } else if (tipo === 'lojista') {
-        floatStatusTitle.innerText = "Novo Pedido #9021";
-        floatStatusSub.innerText = "Valor: R$ 58,00 no Pix";
-        floatDriverTitle.innerText = "Moto Alocada";
-        floatDriverSub.innerText = "Coleta: 8 min";
-      } else {
-        floatStatusTitle.innerText = "GPS Otimizado";
-        floatStatusSub.innerText = "Sem trânsito na rota";
-        floatDriverTitle.innerText = "Ganho Garantido";
-        floatDriverSub.innerText = "R$ 16,00 pela corrida";
-      }
+    function trocarAba(aba, el) {
+      document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      
+      el.classList.add('active');
+      document.getElementById(`panel-${aba}`).classList.add('active');
+      if (navigator.vibrate) navigator.vibrate(20);
     }
 
-    trocarApp('cliente');
-
-    /* Economia Lojista */
-    function calcularEconomia(valor) {
-      const v = parseFloat(valor);
-      document.getElementById('faturamentoTxt').innerText = v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + " /mês";
-      const economiaAnual = (v * 0.12) * 12;
-      document.getElementById('economiaTxt').innerText = economiaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    /* Formulário WhatsApp */
-    function atualizarFormulario(perfil) {
-      const nomeLabel = document.getElementById('nomeLabel');
-      const campoExtraWrap = document.getElementById('campoExtraWrap');
-
-      if (perfil === 'lojista') {
-        nomeLabel.innerText = "Nome do Negócio / Loja";
-        campoExtraWrap.innerHTML = `
-          <label>Segmento Comercial</label>
-          <input type="text" id="extraInput" placeholder="Ex: Hamburgueria, Pizzaria, etc.">
-        `;
-      } else if (perfil === 'motorista') {
-        nomeLabel.innerText = "Seu Nome Completo";
-        campoExtraWrap.innerHTML = `
-          <label>Veículo de Trabalho</label>
-          <select id="extraInput">
-            <option value="Moto">Moto</option>
-            <option value="Carro">Carro / Fiorino</option>
-            <option value="Van/Caminhão">Van / Caminhão</option>
-          </select>
-        `;
-      } else {
-        nomeLabel.innerText = "Seu Nome Completo";
-        campoExtraWrap.innerHTML = `
-          <label>Bairro de Preferência</label>
-          <input type="text" id="extraInput" placeholder="Ex: Onde você mora">
-        `;
-      }
-    }
-
-    function enviarParaWhatsApp(e) {
+    // Abertura com mensagem padrão
+    function abrirWppGeral(e) {
       e.preventDefault();
-
-      const perfil = document.getElementById('perfilSelect').value;
-      const nome = document.getElementById('nomeInput').value;
-      const whatsapp = document.getElementById('whatsappInput').value;
-      const cidade = document.getElementById('cidadeInput').value;
-      const extra = document.getElementById('extraInput').value;
-
-      let tipoFormatado = "";
-      if (perfil === 'lojista') tipoFormatado = "🏪 *LOJISTA / COMÉRCIO*";
-      else if (perfil === 'motorista') tipoFormatado = "🛵 *MOTORISTA / ENTREGADOR*";
-      else tipoFormatado = "🍔 *CLIENTE / USUÁRIO*";
-
-      const mensagem = `🚀 *NOVO CADASTRO VIA SITE LEVAÊ*\n\n` +
-                       `📌 *Perfil:* ${tipoFormatado}\n` +
-                       `👤 *Nome/Loja:* ${nome}\n` +
-                       `📱 *WhatsApp:* ${whatsapp}\n` +
-                       `📍 *Cidade/Bairro:* ${cidade}\n` +
-                       `ℹ️ *Detalhes:* ${extra}\n\n` +
-                       `Gostaria de dar continuidade à minha ativação no app!`;
-
-      window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`, '_blank');
+      const msg = encodeURIComponent("Olá! Vim pelo site da Levaê e gostaria de solicitar um atendimento.");
+      window.open(`https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${msg}`, '_blank');
     }
+
+    // Abertura de links das opções
+    function abrirLinkComMsg(texto) {
+      const msg = encodeURIComponent(texto);
+      window.open(`https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${msg}`, '_blank');
+    }
+
+    // Enviar Orçamento Formatado direto para o WhatsApp
+    function enviarOrcamentoWpp() {
+      const origem = document.getElementById('origemInput').value.trim();
+      const destino = document.getElementById('destinoInput').value.trim();
+
+      if (!origem || !destino) {
+        alert("Por favor, preencha o local de retirada e o de entrega.");
+        return;
+      }
+
+      const mensagem = `Olá! Gostaria de uma cotação rápida pela Levaê:\n\n` +
+                       `📦 *Tipo:* ${tipoVeiculoSelecionado}\n` +
+                       `📍 *Retirada:* ${origem}\n` +
+                       `🏁 *Destino:* ${destino}\n\n` +
+                       `Qual a estimativa de valor e prazo?`;
+
+      window.open(`https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`, '_blank');
+    }
+
+    /* ========================================================
+       EFEITO 3D TILT NA LOGO (Mouse e Touch)
+       ======================================================== */
+    const card = document.getElementById('logoCard');
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      card.style.transform = `rotateX(${-y / 4}deg) rotateY(${x / 4}deg) scale(1.05)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+    });
+
+    /* ========================================================
+       SISTEMA DE TOASTS EM TEMPO REAL (Simulação de Atividade)
+       ======================================================== */
+    const toasts = [
+      "⚡ Entrega expressa concluída no Centro",
+      "🛵 Novo motoentregador disponível na área",
+      "📦 Frete solicitado para o bairro Novo Horizonte",
+      "⭐ Cliente avaliou a última corrida com 5 estrelas!"
+    ];
+
+    let toastIdx = 0;
+    const toastEl = document.getElementById('toast');
+    const toastTxt = document.getElementById('toast-text');
+
+    function exibirProximoToast() {
+      toastTxt.innerText = toasts[toastIdx];
+      toastEl.classList.add('visible');
+
+      setTimeout(() => {
+        toastEl.classList.remove('visible');
+      }, 4000);
+
+      toastIdx = (toastIdx + 1) % toasts.length;
+    }
+
+    // Inicia toasts após 3s e repete a cada 9s
+    setTimeout(() => {
+      exibirProximoToast();
+      setInterval(exibirProximoToast, 9000);
+    }, 3000);
+
+    /* ========================================================
+       CANVAS DE PARTÍCULAS DINÂMICAS DE FUNDO
+       ======================================================== */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let w, h, particles = [];
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (let i = 0; i < 35; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        size: Math.random() * 2 + 1,
+        color: Math.random() > 0.4 ? 'rgba(255, 200, 0, 0.25)' : 'rgba(255, 255, 255, 0.15)'
+      });
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, w, h);
+      
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
+
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
   </script>
 </body>
 </html>
